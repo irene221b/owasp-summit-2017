@@ -31,41 +31,41 @@ participants :
 
 **Threats**
 
-(S) Fake address lookup service
+- (S) Fake address lookup service
     - possibly through DNS poisoning
     - goals might be either to siphon private data of JuiceShop customers or return bogus addresses
- Mitigation: TLS with mutual authentication
+ - Mitigation: TLS with mutual authentication
     
-(S) Fake JuiceShop - someone else (possibly including the address lookup service itself) sending requests on behalf of the JuiceShop
-(R) Malicious data in these requests - can JuiceShop be liable if addressing service incures damage
+- (S) Fake JuiceShop - someone else (possibly including the address lookup service itself) sending requests on behalf of the JuiceShop
+- (R) Malicious data in these requests - can JuiceShop be liable if addressing service incures damage
     
-(D) If service is rate-limited, the threat above will lead to DoS.
+- (D) If service is rate-limited, the threat above will lead to DoS.
 
-(S) Customer enters fake address, leading to "craiglist" attack
+- (S) Customer enters fake address, leading to "craiglist" attack
 
-Address lookup is malicious, leading to:
+- Address lookup is malicious, leading to:
 
-(T) Trucks being sent to fake address
-(T) Bad data sent back, violating assumed response format, leading to range of problems with JuiceShop depending how vulnerable the JuiceShop parser is (from DoS to RCE)
+- (T) Trucks being sent to fake address
+- (T) Bad data sent back, violating assumed response format, leading to range of problems with JuiceShop depending how vulnerable the JuiceShop parser is (from DoS to RCE)
 
-(D) Customers or maybe fake JuiceShop requests include bad addresses (bad as in associated with drug trade, terrorists etc), hoping to trigger alerts in some security analytics, leading to DoS by government.
+- (D) Customers or maybe fake JuiceShop requests include bad addresses (bad as in associated with drug trade, terrorists etc), hoping to trigger alerts in some security analytics, leading to DoS by government.
 
-(I) Eavesdropping on communication will break privacy regulations, GDPR etc.
+- (I) Eavesdropping on communication will break privacy regulations, GDPR etc.
     Mitigation: TLS.
 
-(D) If the service is synchronous and unavailable or slow, would it result in DoS in JuiceShop?
+- (D) If the service is synchronous and unavailable or slow, would it result in DoS in JuiceShop?
 
-(I) If JuiceShop authenticates with keys, how secure is key storage.
+- (I) If JuiceShop authenticates with keys, how secure is key storage.
 
 
 **Assumptions**
 
-Address resolution service is paid (or at least rate-limited, with Juice shop having a specific quota)
-The API sends (name, address), gets back either:
+- Address resolution service is paid (or at least rate-limited, with Juice shop having a specific quota)
+- The API sends (name, address), gets back either:
   - address if it was correct
   - list of potential addresses if the resolution was a bit fuzzy
   - nothing if failed to resolve
-No outbound rate limit, so a fuzzy request can result in a large list of matches
+- No outbound rate limit, so a fuzzy request can result in a large list of matches
 
 
 #### Delivery Service (External)
@@ -105,37 +105,40 @@ No outbound rate limit, so a fuzzy request can result in a large list of matches
 
 **Threats**
 
-- Juice Shop sends malicious emails (spoofing+)
-- Connecting to a fake service (spoofing)
-- BCC header field is abused (tampering, information disclosure)
-- Malicious data can be injected into the HTML body (tampering)
-- Malicious data can be injected to the email headers headers (tampering)
-- Juice Shop sending spam (spoofing+)
-- Emails are not being sent (denial of service)
-- Sent emails not confirmed appropriately by email service provider (repudiation)
-- Sensitive data sent in emails (information disclosure)
-- Email tracking mechanism is misused or abused (information disclosure / privacy)
+- Service is misused
+- Juice Shop sends malicious emails
+- Connected to the correct service
+- BCC abused
+- HTML body injection
+- Header injection
+- Juice Shop sending spam
+- Email message tampering
+- Sent confirmation
+- Sensitive data sent in emails
+- Tracking mechanism (privacy)
 
 **Assumptions**
 
-- Rest API is used
+- Rest API
 - TLS is used
 - Threat models exist for TLS
-- Email service is only used for delivery confirmation
-- Juice Shop has validated reputation of the email delivery mechanism
+- Delivery confirmation
+- Validated reputation
+
+
 
 #### Invoice Tracking (Internal)
 
 **Threats**
 
-- (E) Unauthorised access to the invoice service
-- (I) Page is obfuscated, but a determined attacker can easily find it
-- (I) Disclosure of business sensitive data (Prices, Quantities)
-- (I) Disclosure of user sensitive data (PII)
-- (R) Audit trail of the invoice
-- (T) Manipulation of invoice data
-- (R) Logging of read access
-- (I) Screen scraping (grab large volume of data)
+- Unauthorised access to the invoice service
+- Page is obfuscated
+- Discouragement of business sensitive data (Prices, Quantities)
+- Discouragement of user sensitive data
+- Audit trail of the invoice
+- Manipulation of invoice data
+- Logging of read access
+- Screen scraping
 
 **Assumptions**
 
